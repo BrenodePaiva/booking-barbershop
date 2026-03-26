@@ -4,27 +4,34 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { MenuHeader } from "./menu-header";
-import { ChevronsUpDown, User2 } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import { CustomTriggerHeader } from "./custom-trigger-header";
 
-export function SideHeader() {
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { getInitials } from "@/app/helpers/get-initials";
+import { checkUserSession } from "@/app/helpers/check-user-session";
+import { LogOutButton } from "./log-out-button";
+
+export const SideHeader = async () => {
+  const session = await checkUserSession();
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
-          <SidebarGroupContent>
+          <CustomTriggerHeader />
+
+          <SidebarGroupContent className="mt-13 md:mt-auto">
             <MenuHeader />
           </SidebarGroupContent>
         </SidebarGroup>
@@ -34,20 +41,27 @@ export function SideHeader() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <SidebarMenuButton>
-                  <User2 /> Username
-                  <ChevronsUpDown className="ml-auto" />
-                </SidebarMenuButton>
+                {session && (
+                  <SidebarMenuButton>
+                    <div className="flex items-center gap-3">
+                      {session.user.image && (
+                        <Avatar>
+                          <AvatarImage src={session.user.image} sizes="34px" />
+                          <AvatarFallback>
+                            {getInitials(session.user.name)}
+                          </AvatarFallback>
+                        </Avatar>
+                      )}
+
+                      <p className="font-bold">{session.user.name}</p>
+                    </div>
+                    <ChevronsUpDown className="ml-auto" />
+                  </SidebarMenuButton>
+                )}
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top">
-                <DropdownMenuItem>
-                  <span>Account</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Billing</span>
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <span>Sign out</span>
+                <DropdownMenuItem asChild>
+                  <LogOutButton />
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -56,4 +70,4 @@ export function SideHeader() {
       </SidebarFooter>
     </Sidebar>
   );
-}
+};

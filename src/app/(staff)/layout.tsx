@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { SideHeader } from "@/components/side-header";
 import { CustomTriggerHeader } from "@/components/custom-trigger-header";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,17 +28,20 @@ export default function StaffLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SidebarProvider defaultOpen={false}>
           <SideHeader />
-          <main>
-            <CustomTriggerHeader />
+          <main className="w-full">
+            <div className="md:hidden">
+              <CustomTriggerHeader />
+            </div>
             <div className="mx-5 mt-13 mb-5">{children}</div>
           </main>
         </SidebarProvider>
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );

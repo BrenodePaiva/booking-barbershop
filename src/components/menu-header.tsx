@@ -1,51 +1,87 @@
 "use client";
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import {
+  CalendarDays,
+  LayoutDashboard,
+  Ruler,
+  Scissors,
+  Users,
+} from "lucide-react";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "./ui/sidebar";
+import { usePathname } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
+import { getUserRoles } from "@/actions/role/get-user-roles";
+import { useEffect, useState } from "react";
 
-// Menu items.
 const items = [
   {
-    title: "Home",
-    url: "#",
-    icon: Home,
+    title: "Dashboard",
+    url: "/dashboard",
+    icon: LayoutDashboard,
+    allowedRoles: ["admin", "gerente"],
   },
   {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
+    title: "Serviços",
+    url: "/barbershop-service",
+    icon: Ruler,
+    allowedRoles: ["admin", "gerente"],
   },
   {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
+    title: "Barbeiros",
+    url: "/barber-list",
+    icon: Scissors,
+    allowedRoles: ["admin", "gerente"],
   },
   {
-    title: "Search",
-    url: "#",
-    icon: Search,
+    title: "Agendamentos",
+    url: "/booking-list",
+    icon: CalendarDays,
+    allowedRoles: ["admin", "gerente", "barbeiro"],
   },
   {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
+    title: "usuários",
+    url: "/user-list",
+    icon: Users,
+    allowedRoles: ["admin", "gerente"],
   },
 ];
 
 export function MenuHeader() {
+  const pathname = usePathname();
   const { toggleSidebar, isMobile } = useSidebar();
+  const { data: session } = authClient.useSession();
+  const [userRoles, setUserRoles] = useState<string[]>([]);
+
   const handleSidebarToggle = () => {
     return isMobile && toggleSidebar();
   };
+
+  useEffect(() => {
+    const feach = async () => {
+      if (!session) return;
+      const roles = await getUserRoles(session.user.id);
+      setUserRoles(roles);
+    };
+    feach();
+  }, [session]);
+
+  const visibleItems = items.filter((item) =>
+    item.allowedRoles.some((role) => userRoles.includes(role)),
+  );
+
   return (
     <SidebarMenu>
-      {items.map((item) => (
+      {visibleItems.map((item) => (
         <SidebarMenuItem key={item.title}>
-          <SidebarMenuButton asChild onClick={handleSidebarToggle}>
+          <SidebarMenuButton
+            asChild
+            onClick={handleSidebarToggle}
+            isActive={pathname === item.url}
+          >
             <a href={item.url}>
               <item.icon />
               <span>{item.title}</span>

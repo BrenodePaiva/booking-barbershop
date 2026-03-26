@@ -6,6 +6,7 @@ import {
   pgTable,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -115,8 +116,8 @@ export const barberTable = pgTable("barber_table", {
   id: uuid().primaryKey().defaultRandom(),
   userId: text("user_id")
     .notNull()
-    .references(() => userTable.id, { onDelete: "cascade" }),
-  name: text(),
+    .references(() => userTable.id, { onDelete: "cascade" })
+    .unique(),
   bio: text(),
   imageUrl: text("image_url"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -132,14 +133,87 @@ export const barberRelations = relations(barberTable, ({ one, many }) => ({
     references: [userTable.id],
   }),
   bookings: many(bookingTable),
+  availability: many(barberAvailabilityTable),
+  blocks: one(barberBlocksTable, {
+    fields: [barberTable.id],
+    references: [barberBlocksTable.barberId],
+  }),
 }));
+
+export const barberAvailabilityEnum = pgEnum("barber_availability_enum", [
+  "morning",
+  "afternoon",
+]);
+
+export const barberAvailabilityTable = pgTable(
+  "barber_availability_table",
+  {
+    id: uuid().primaryKey().defaultRandom(),
+    barberId: uuid("barber_id")
+      .notNull()
+      .references(() => barberTable.id, { onDelete: "cascade" }),
+    dayOfWeek: integer("day_of_week").notNull(),
+    slotType: barberAvailabilityEnum("slot_type").notNull(),
+    start: text(),
+    end: text(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => /* @__PURE__ */ new Date())
+      .notNull(),
+  },
+  (table) => ({
+    uniqueAvailability: uniqueIndex("unique_availability").on(
+      table.barberId,
+      table.dayOfWeek,
+      table.slotType,
+    ),
+  }),
+);
+
+export const barberAvailabilityRelations = relations(
+  barberAvailabilityTable,
+  ({ one }) => ({
+    barber: one(barberTable, {
+      fields: [barberAvailabilityTable.barberId],
+      references: [barberTable.id],
+    }),
+  }),
+);
+
+export const barberBlocksTable = pgTable("barber_blocks_table", {
+  id: uuid().primaryKey().defaultRandom(),
+  barberId: uuid("barber_id")
+    .notNull()
+    .references(() => barberTable.id, { onDelete: "cascade" })
+    .unique(),
+  start: timestamp().notNull(),
+  end: timestamp().notNull(),
+  reason: text().notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .defaultNow()
+    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .notNull(),
+});
+
+export const barberBlocksRelations = relations(
+  barberBlocksTable,
+  ({ one }) => ({
+    barber: one(barberTable, {
+      fields: [barberBlocksTable.barberId],
+      references: [barberTable.id],
+    }),
+  }),
+);
 
 export const barberShopServiceTable = pgTable("barber_shop_service_table", {
   id: uuid().primaryKey().defaultRandom(),
-  name: text().notNull(),
+  name: text().notNull().unique(),
   description: text(),
   imageUrl: text("image_url"),
   priceCents: integer("price_cents").notNull(),
+  isRecommended: boolean("is_recommended").default(false).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -174,6 +248,7 @@ export const bookingTable = pgTable("booking_table", {
     .references(() => barberShopServiceTable.id, { onDelete: "cascade" }),
   date: timestamp().notNull(),
   status: bookingStatusEnum("status").default("Pendente").notNull(),
+  cancelReason: text("cancel_reason"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
