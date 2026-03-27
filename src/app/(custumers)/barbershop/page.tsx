@@ -4,14 +4,14 @@ import { getSearchItem } from "@/data/search-barbershop/get-search-item";
 import { getSearchService } from "@/data/search-barbershop/get-search-service";
 
 interface BarbershopsPageProps {
-  searchParams: Promise<{
+  searchParams: {
     barber?: string;
     service?: string;
-  }>;
+  };
 }
 
 const BarbershopsPage = async ({ searchParams }: BarbershopsPageProps) => {
-  const { barber, service } = await searchParams;
+  const { barber, service } = searchParams;
   const barbershops = await getSearchItem({ barber });
   const barbershopServices = await getSearchService({ service });
   return (
