@@ -16,12 +16,12 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 interface BarbershopPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
 const BarbershopPage = async ({ params }: BarbershopPageProps) => {
-  const barbershopService = await getIdService((await params).id);
-  const barbershopBarber = await getIdBarber((await params).id);
+  const barbershopService = await getIdService(params.id);
+  const barbershopBarber = await getIdBarber(params.id);
   let dataBarbers;
   let dataServices;
 
