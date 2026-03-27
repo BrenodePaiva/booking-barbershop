@@ -5,6 +5,7 @@ import "@/app/globals.css";
 import { Toaster } from "sonner";
 import Footer from "@/components/footer";
 import HeaderSwitcher from "@/components/header-switcher";
+import { Suspense } from "react";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function CustumersLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <HeaderSwitcher />
+        <Suspense fallback={<div>Carregando header...</div>}>
+          <HeaderSwitcher />
+        </Suspense>
         <div className="flex min-h-[calc(100vh-86px)] flex-col">
           <div className="flex-1">{children}</div>
           <Footer />
