@@ -8,3 +8,7 @@ export const formatCentsToBRL = (cents: number) => {
     currency: "BRL",
   }).format(cents / 100);
 };
+
+export const convertToReal = (cents: number) => {
+  return (cents / 100).toFixed(2).replace(".", ",");
+};

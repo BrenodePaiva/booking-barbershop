@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import Footer from "@/components/footer";
 import HeaderSwitcher from "@/components/header-switcher";
 import { Suspense } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function CustumersLayout({
           <Footer />
         </div>
         <Toaster position="top-center" richColors />
+        <SpeedInsights />
       </body>
     </html>
   );

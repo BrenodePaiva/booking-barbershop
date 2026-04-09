@@ -10,7 +10,7 @@ export const LogOutButton = () => {
   };
   return (
     <Button
-      className="justify-start p-0"
+      className="w-full justify-start p-0"
       variant="ghost"
       onClick={handleLogoutClick}
     >

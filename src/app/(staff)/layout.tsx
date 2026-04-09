@@ -6,6 +6,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { SideHeader } from "@/components/side-header";
 import { CustomTriggerHeader } from "@/components/custom-trigger-header";
 import { Toaster } from "sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,14 +35,16 @@ export default function StaffLayout({
       >
         <SidebarProvider defaultOpen={false}>
           <SideHeader />
+          <div className="md:hidden">
+            <CustomTriggerHeader />
+          </div>
+
           <main className="w-full">
-            <div className="md:hidden">
-              <CustomTriggerHeader />
-            </div>
             <div className="mx-5 mt-13 mb-5">{children}</div>
           </main>
         </SidebarProvider>
         <Toaster position="top-center" richColors />
+        <SpeedInsights />
       </body>
     </html>
   );

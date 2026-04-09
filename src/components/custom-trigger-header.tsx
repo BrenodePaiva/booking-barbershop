@@ -16,7 +16,11 @@ export function CustomTriggerHeader() {
   return (
     <>
       <div className="fixed left-0 z-10 md:hidden">
-        <Button onClick={handleToggle} variant="ghost" className="m-1">
+        <Button
+          onClick={handleToggle}
+          variant="ghost"
+          className="m-1 bg-white shadow-md"
+        >
           <PanelLeft size={20} /> Menu
         </Button>
       </div>

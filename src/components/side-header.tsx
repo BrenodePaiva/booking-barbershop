@@ -1,3 +1,4 @@
+"use client";
 import {
   Sidebar,
   SidebarContent,
@@ -14,17 +15,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { CustomTriggerHeader } from "./custom-trigger-header";
 
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { getInitials } from "@/app/helpers/get-initials";
-import { checkUserSession } from "@/app/helpers/check-user-session";
 import { LogOutButton } from "./log-out-button";
+import { authClient } from "@/lib/auth-client";
 
-export const SideHeader = async () => {
-  const session = await checkUserSession();
+export const SideHeader = () => {
+  const { data: session } = authClient.useSession();
   return (
     <Sidebar collapsible="icon">
       <SidebarContent>
@@ -36,23 +38,22 @@ export const SideHeader = async () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter>
+      <SidebarFooter className="px-0">
         <SidebarMenu>
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 {session && (
-                  <SidebarMenuButton>
+                  <SidebarMenuButton className="min-w-10">
                     <div className="flex items-center gap-3">
                       {session.user.image && (
                         <Avatar>
-                          <AvatarImage src={session.user.image} sizes="34px" />
+                          <AvatarImage src={session.user.image} />
                           <AvatarFallback>
                             {getInitials(session.user.name)}
                           </AvatarFallback>
                         </Avatar>
                       )}
-
                       <p className="font-bold">{session.user.name}</p>
                     </div>
                     <ChevronsUpDown className="ml-auto" />
@@ -62,6 +63,12 @@ export const SideHeader = async () => {
               <DropdownMenuContent side="top">
                 <DropdownMenuItem asChild>
                   <LogOutButton />
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <p className="text-muted-foreground text-sm">
+                    {session?.user.email}
+                  </p>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
