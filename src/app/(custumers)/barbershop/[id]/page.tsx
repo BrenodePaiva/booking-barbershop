@@ -34,12 +34,6 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
     dataServices = await getServices();
   }
 
-  const timestamp = bService?.updatedAt
-    ? bService.updatedAt.getTime()
-    : bBarber?.updatedAt.getTime();
-
-  console.log("URL da imagem:", bService?.imageUrl ?? bBarber?.imageUrl);
-
   return (
     <>
       <div className="hidden lg:block">
@@ -48,30 +42,20 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       <div className="lg:flex lg:justify-center lg:gap-6 lg:p-5">
         <div className="lg:max-w-[700px] lg:flex-2">
           <div className="relative h-[250px] w-full lg:h-[487px]">
+            {bService?.imageUrl || bBarber?.imageUrl ? (
+              <Image
+                alt={bService?.name ?? bBarber?.user.name ?? ""}
+                src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}?t=${bService?.updatedAt ? bService.updatedAt.getTime() : bBarber?.updatedAt.getTime()}`}
+                fill
+                className="object-cover object-top"
+              />
+            ) : (
+              <div className="h-full w-full bg-gray-500"></div>
+            )}
             <div className="lg:hidden">
               <MobileButton />
             </div>
           </div>
-          <Image
-            alt={bService?.name ?? bBarber?.user.name ?? ""}
-            src={`${bService?.imageUrl ?? ""}`}
-            width={400}
-            height={400}
-          />
-
-          <Image
-            alt={bService?.name ?? bBarber?.user.name ?? ""}
-            src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}`}
-            width={400}
-            height={400}
-          />
-
-          <Image
-            alt={bService?.name ?? bBarber?.user.name ?? ""}
-            src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}?t=${bService?.updatedAt ? bService.updatedAt.getTime() : bBarber?.updatedAt.getTime()}`}
-            width={400}
-            height={400}
-          />
 
           <div className="border-b border-solid p-5 lg:border-none">
             <h1 className="mb-3 text-xl font-bold">
