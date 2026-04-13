@@ -38,6 +38,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
     ? bService.updatedAt.getTime()
     : bBarber?.updatedAt.getTime();
 
+  console.log("URL da imagem:", bService?.imageUrl ?? bBarber?.imageUrl);
+
   return (
     <>
       <div className="hidden lg:block">
