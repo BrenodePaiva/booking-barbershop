@@ -3,8 +3,8 @@ import { Card, CardContent } from "./ui/card";
 import PhoneItem from "./phone-item";
 
 interface BarbershopSummaryProps {
-  description?: string;
-  bio?: string;
+  description?: string | null;
+  bio?: string | null;
 }
 
 const BarbershopSummary = ({ description, bio }: BarbershopSummaryProps) => {
@@ -21,17 +21,16 @@ const BarbershopSummary = ({ description, bio }: BarbershopSummaryProps) => {
 
       <Card className="rounded-none py-3">
         <CardContent className="px-2">
-          {description ||
-            (bio && (
-              <div className="mb-3 space-y-2 border-b border-solid p-5">
-                <h2 className="text-xs font-bold uppercase">
-                  {description ? "Descrição" : "Bio"}
-                </h2>
-                <p className="text-justify text-sm hyphens-auto text-gray-400">
-                  {description ?? bio}
-                </p>
-              </div>
-            ))}
+          {(description || bio) && (
+            <div className="mb-3 space-y-2 border-b border-solid pb-3">
+              <h2 className="text-xs font-bold uppercase">
+                {description ? "Descrição" : "Bio"}
+              </h2>
+              <p className="text-justify text-sm hyphens-auto text-gray-400">
+                {description ?? bio}
+              </p>
+            </div>
+          )}
 
           <PhoneItem phone="9988727782" />
 

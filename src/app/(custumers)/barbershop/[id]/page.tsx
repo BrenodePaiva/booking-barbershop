@@ -14,14 +14,22 @@ import { ChevronLeftIcon, MapPinIcon, MenuIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import MobileButton from "./components/mobile-button";
+import { Separator } from "@/components/ui/separator";
 
 interface BarbershopPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 const BarbershopPage = async ({ params }: BarbershopPageProps) => {
-  const barbershopService = await getIdService(params.id);
-  const barbershopBarber = await getIdBarber(params.id);
+  const { id } = await params;
+  const barbershopService = await getIdService(id);
+  const barbershopBarber = await getIdBarber(id);
+
+  if (!barbershopService && !barbershopBarber) {
+    return notFound();
+  }
+
   let dataBarbers;
   let dataServices;
 
@@ -49,37 +57,15 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
                 barbershopService?.imageUrl ?? barbershopBarber?.imageUrl ?? ""
               }
               fill
-              className="object-cover"
+              className="object-cover object-top"
             />
 
             <div className="lg:hidden">
-              <Button
-                size="icon"
-                variant="secondary"
-                className="absolute top-4 left-4"
-                asChild
-              >
-                <Link href="/">
-                  <ChevronLeftIcon />
-                </Link>
-              </Button>
-
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button
-                    size="icon"
-                    variant="secondary"
-                    className="absolute top-4 right-4"
-                  >
-                    <MenuIcon />
-                  </Button>
-                </SheetTrigger>
-                <SidebarSheet />
-              </Sheet>
+              <MobileButton />
             </div>
           </div>
 
-          <div className="border-b border-solid p-5">
+          <div className="border-b border-solid p-5 lg:border-none">
             <h1 className="mb-3 text-xl font-bold">
               {barbershopService?.name ?? barbershopBarber?.user.name}
             </h1>
@@ -90,7 +76,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               </div>
 
               {barbershopService?.priceCents && (
-                <div className="flex items-center gap-2">
+                <div className="ml-1 flex items-center gap-2">
                   <h2 className="text-primary font-bold">
                     {formatCentsToBRL(barbershopService.priceCents)}
                   </h2>
@@ -99,19 +85,18 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
             </div>
           </div>
 
-          {barbershopService?.description ||
-            (barbershopBarber?.bio && (
-              <div className="space-y-2 border-b border-solid p-5 lg:hidden">
-                <h2 className="text-xs font-bold text-gray-400 uppercase">
-                  {barbershopService?.description ? "Descrição" : "Bio"}
-                </h2>
-                <p className="text-justify text-sm">
-                  {barbershopService?.description ?? barbershopBarber?.bio}
-                </p>
-              </div>
-            ))}
+          {(barbershopService?.description || barbershopBarber?.bio) && (
+            <div className="space-y-2 border-b border-solid p-5 lg:hidden">
+              <h2 className="text-xs font-bold text-gray-400 uppercase">
+                {barbershopService?.description ? "Descrição" : "Bio"}
+              </h2>
+              <p className="text-justify text-sm">
+                {barbershopService?.description ?? barbershopBarber?.bio}
+              </p>
+            </div>
+          )}
 
-          <div className="space-y-3 border-b border-solid p-5 lg:border-none">
+          {/* <div className="space-y-3 border-b border-solid p-5 lg:border-none">
             <h2 className="text-xs font-bold text-gray-400 uppercase">
               {barbershopService ? "Barbeiros" : "Serviços"}
             </h2>
@@ -136,7 +121,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
                   />
                 ))}
             </div>
-          </div>
+          </div> */}
 
           <div className="space-y-3 p-5 lg:hidden">
             <PhoneItem phone="21987556242" />
@@ -144,7 +129,37 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
         </div>
 
         <div className="hidden lg:block lg:max-w-[350px] lg:flex-1">
-          <BarbershopSummary />
+          <BarbershopSummary
+            description={barbershopService?.description}
+            bio={barbershopBarber?.bio}
+          />
+        </div>
+      </div>
+
+      <div className="space-y-3 border-t p-5">
+        <h2 className="text-xs font-bold text-gray-400 uppercase">
+          {barbershopService ? "Barbeiros" : "Serviços"}
+        </h2>
+        <div className="space-y-3 lg:grid lg:min-h-auto lg:grid-cols-2 lg:space-y-0 lg:gap-x-5 lg:gap-y-3">
+          {barbershopService &&
+            dataBarbers?.map((barber) => (
+              <ServiceItem
+                key={barber.id}
+                barber={barber}
+                service={barbershopService}
+                isService={false}
+              />
+            ))}
+
+          {barbershopBarber &&
+            dataServices?.map((service) => (
+              <ServiceItem
+                key={service.id}
+                barber={barbershopBarber}
+                service={service}
+                isService
+              />
+            ))}
         </div>
       </div>
     </>

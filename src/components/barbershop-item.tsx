@@ -17,13 +17,13 @@ interface BarbershopItemProps {
 
 const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
   return (
-    <Card className="relative min-w-[174px] rounded-2xl px-1 pt-1 pb-9">
+    <Card className="relative max-w-[200px] min-w-[200px] rounded-2xl px-1 pt-1 pb-9">
       <CardContent className="min-w-[159px] p-0">
         <div className="relative h-[159px] w-full">
           {service?.imageUrl || barber?.imageUrl ? (
             <Image
               alt={service?.name ?? barber?.user.name ?? ""}
-              src={service?.imageUrl ?? barber?.imageUrl ?? ""}
+              src={`${service?.imageUrl ?? barber?.imageUrl ?? ""}?t=${barber?.updatedAt.getTime()}`}
               fill
               className="rounded-2xl object-cover"
             />
@@ -32,10 +32,10 @@ const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
           )}
         </div>
         <div className="mb-4 px-2 py-3">
-          <h3 className="truncate font-semibold">
+          <h3 className="mb-2 font-semibold">
             {service?.name ?? barber?.user.name}
           </h3>
-          <p className="truncate text-sm text-gray-400">
+          <p className="line-clamp-2 text-sm text-gray-400">
             {service?.description ?? barber?.bio}
           </p>
           {service?.priceCents && (

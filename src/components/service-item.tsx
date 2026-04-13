@@ -255,28 +255,35 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
             />
           </div>
 
-          <div className="space-y-2">
-            <h3 className="font-semibold">
+          <div>
+            <h3 className="mb-1.5 font-semibold">
               {isService ? service.name : barber.user.name}
             </h3>
-            <p className="text-sm text-gray-400">
-              {isService ? service.description : barber.bio}
-            </p>
-
-            {isService && (
-              <p className="text-primary text-sm font-bold">
-                {formatCentsToBRL(service.priceCents)}
+            <div className="space-y-1">
+              <p className="text-sm text-gray-400">
+                {isService ? service.description : barber.bio}
               </p>
-            )}
 
+              <div className="mt-2 flex items-center gap-5">
+                {isService && (
+                  <p className="text-primary text-sm font-bold">
+                    {formatCentsToBRL(service.priceCents)}
+                  </p>
+                )}
+
+                <Button
+                  size="sm"
+                  onClick={handleBookingClick}
+                  variant="outline"
+                >
+                  Resevar
+                </Button>
+              </div>
+            </div>
             <Sheet
               open={bookingSheetIsOpen}
               onOpenChange={handleBookingSheetOpenChange}
             >
-              <Button size="sm" onClick={handleBookingClick} variant="outline">
-                Resevar
-              </Button>
-
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle>Fazer Reserva</SheetTitle>
