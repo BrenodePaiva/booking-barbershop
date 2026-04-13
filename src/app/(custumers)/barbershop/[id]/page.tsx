@@ -48,18 +48,6 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       <div className="lg:flex lg:justify-center lg:gap-6 lg:p-5">
         <div className="lg:max-w-[700px] lg:flex-2">
           <div className="relative h-[250px] w-full lg:h-[487px]">
-            {bService?.imageUrl || bBarber?.imageUrl ? (
-              <Image
-                alt={bService?.name ?? bBarber?.user.name ?? ""}
-                src={bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
-                // src="https://s3-barbershop-app.s3.sa-east-1.amazonaws.com/services/55d9b037-4e3a-4bd0-8d0d-1625d0d84595"
-                fill
-                className="object-cover object-top"
-              />
-            ) : (
-              <div className="h-full w-full bg-gray-500"></div>
-            )}
-
             <div className="lg:hidden">
               <MobileButton />
             </div>
