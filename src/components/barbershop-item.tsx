@@ -31,6 +31,7 @@ const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
             <div className="h-full w-full bg-gray-500"></div>
           )}
         </div>
+
         <div className="mb-4 px-2 py-3">
           <h3 className="mb-2 font-semibold">
             {service?.name ?? barber?.user.name}

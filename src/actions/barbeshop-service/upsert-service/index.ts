@@ -45,6 +45,9 @@ export const upsertBarbershopService = actionClient
             });
         }
         revalidatePath("/barbeshop-service");
+        revalidatePath("/");
+        revalidatePath("/barbershop");
+        revalidatePath(`/barbershop/${id}`);
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         if (imageUrl) {
