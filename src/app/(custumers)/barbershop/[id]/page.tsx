@@ -51,8 +51,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
             {bService?.imageUrl || bBarber?.imageUrl ? (
               <Image
                 alt={bService?.name ?? bBarber?.user.name ?? ""}
-                // src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
-                src="https://s3-barbershop-app.s3.sa-east-1.amazonaws.com/services/55d9b037-4e3a-4bd0-8d0d-1625d0d84595"
+                src={bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
+                // src="https://s3-barbershop-app.s3.sa-east-1.amazonaws.com/services/55d9b037-4e3a-4bd0-8d0d-1625d0d84595"
                 fill
                 className="object-cover object-top"
               />
@@ -64,7 +64,26 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               <MobileButton />
             </div>
           </div>
-          <img src={bService?.imageUrl ?? ""} className="w-full" />
+          <Image
+            alt={bService?.name ?? bBarber?.user.name ?? ""}
+            src={`${bService?.imageUrl ?? ""}`}
+            width={400}
+            height={400}
+          />
+
+          <Image
+            alt={bService?.name ?? bBarber?.user.name ?? ""}
+            src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}`}
+            width={400}
+            height={400}
+          />
+
+          <Image
+            alt={bService?.name ?? bBarber?.user.name ?? ""}
+            src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}?t=${bService?.updatedAt ? bService.updatedAt.getTime() : bBarber?.updatedAt.getTime()}`}
+            width={400}
+            height={400}
+          />
 
           <div className="border-b border-solid p-5 lg:border-none">
             <h1 className="mb-3 text-xl font-bold">
