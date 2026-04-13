@@ -51,8 +51,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
             {bService?.imageUrl || bBarber?.imageUrl ? (
               <Image
                 alt={bService?.name ?? bBarber?.user.name ?? ""}
-                src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
-              `}
+                // src={`${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
+                src="https://s3-barbershop-app.s3.sa-east-1.amazonaws.com/services/55d9b037-4e3a-4bd0-8d0d-1625d0d84595"
                 fill
                 className="object-cover object-top"
               />
