@@ -50,7 +50,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               <Image
                 alt={bService?.name ?? bBarber?.user.name ?? ""}
                 src={`
-                ${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}?t=${timestamp}
+                ${bService?.imageUrl ?? bBarber?.imageUrl ?? "/Banner-01.png"}
                 `}
                 fill
                 className="object-cover object-top"
