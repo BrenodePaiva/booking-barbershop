@@ -49,6 +49,7 @@ const ServiceUpsertContent = ({
     defaultValues: defaultValues
       ? {
           ...defaultValues,
+          priceCents: defaultValues.priceCents / 100,
           imageUrl: null,
         }
       : {
@@ -64,6 +65,7 @@ const ServiceUpsertContent = ({
     if (defaultValues) {
       form.reset({
         ...defaultValues,
+        priceCents: defaultValues.priceCents / 100,
         imageUrl: null,
       });
     }

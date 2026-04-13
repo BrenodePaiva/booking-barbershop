@@ -34,9 +34,9 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
     dataServices = await getServices();
   }
 
-  if (!bService && !bBarber) {
-    return notFound();
-  }
+  const timestamp = bService?.updatedAt
+    ? bService.updatedAt.getTime()
+    : bBarber?.updatedAt.getTime();
 
   return (
     <>
@@ -46,18 +46,18 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
       <div className="lg:flex lg:justify-center lg:gap-6 lg:p-5">
         <div className="lg:max-w-[700px] lg:flex-2">
           <div className="relative h-[250px] w-full lg:h-[487px]">
-            <Image
-              alt={bService?.name ?? bBarber?.user.name ?? ""}
-              src={`
-                ${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}?t=${
-                  bService?.updatedAt
-                    ? bService?.updatedAt.getTime()
-                    : bBarber?.updatedAt.getTime()
-                }
-              `}
-              fill
-              className="object-cover object-top"
-            />
+            {bService?.imageUrl || bBarber?.imageUrl ? (
+              <Image
+                alt={bService?.name ?? bBarber?.user.name ?? ""}
+                src={`
+                ${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}?t=${timestamp}
+                `}
+                fill
+                className="object-cover object-top"
+              />
+            ) : (
+              <div className="h-full w-full bg-gray-500"></div>
+            )}
 
             <div className="lg:hidden">
               <MobileButton />
