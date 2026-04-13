@@ -7,6 +7,7 @@ import Link from "next/link";
 import { barberShopServiceTable, barberTable, userTable } from "@/db/schema";
 
 import { formatCentsToBRL } from "@/app/helpers/money";
+import { useEffect } from "react";
 
 interface BarbershopItemProps {
   service?: typeof barberShopServiceTable.$inferSelect;
@@ -23,7 +24,12 @@ const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
           {service?.imageUrl || barber?.imageUrl ? (
             <Image
               alt={service?.name ?? barber?.user.name ?? ""}
-              src={`${service?.imageUrl ?? barber?.imageUrl ?? ""}?t=${barber?.updatedAt.getTime()}`}
+              src={`${service?.imageUrl ?? barber?.imageUrl ?? ""}?t=${
+                service?.updatedAt
+                  ? service?.updatedAt.getTime()
+                  : barber?.updatedAt.getTime()
+              }
+                `}
               fill
               className="rounded-2xl object-cover"
             />
