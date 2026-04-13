@@ -50,8 +50,8 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               <Image
                 alt={bService?.name ?? bBarber?.user.name ?? ""}
                 src={`
-                ${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
-                `}
+              ${bService?.imageUrl ?? bBarber?.imageUrl ?? ""}
+              `}
                 fill
                 className="object-cover object-top"
               />
@@ -63,6 +63,7 @@ const BarbershopPage = async ({ params }: BarbershopPageProps) => {
               <MobileButton />
             </div>
           </div>
+          <img src={bService?.imageUrl ?? ""} className="w-full" />
 
           <div className="border-b border-solid p-5 lg:border-none">
             <h1 className="mb-3 text-xl font-bold">
