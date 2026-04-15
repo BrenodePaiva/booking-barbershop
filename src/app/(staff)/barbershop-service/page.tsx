@@ -13,7 +13,12 @@ const barberShopServicePage = async () => {
 
   return (
     <ContainerTabel>
-      <DataTable columns={columns} data={data}>
+      <DataTable
+        columns={columns}
+        data={data}
+        placeholder="Filtrar nome..."
+        filterColumn="name"
+      >
         <ServiceCreateButton />
       </DataTable>
     </ContainerTabel>

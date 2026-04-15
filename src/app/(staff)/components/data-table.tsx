@@ -59,7 +59,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <div className="flex w-full items-center justify-between">
+      <div className="flex w-full flex-row-reverse items-center justify-end gap-6">
         {placeholder && filterColumn && (
           <div className="flex w-auto items-center py-4">
             <Input
