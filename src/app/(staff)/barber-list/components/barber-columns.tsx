@@ -54,6 +54,16 @@ export const columns: ColumnDef<Barbers>[] = [
   },
 
   {
+    accessorKey: "bio",
+    header: "Bio",
+    cell: (row) => {
+      const bio = row.row.original.bio;
+
+      return <p className="max-w-xs truncate text-sm text-gray-700">{bio}</p>;
+    },
+  },
+
+  {
     id: "actions",
     cell: (row) => {
       const barber = row.row.original;

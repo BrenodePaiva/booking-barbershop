@@ -22,6 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2Icon } from "lucide-react";
 import { useAction } from "next-safe-action/hooks";
@@ -109,6 +110,25 @@ const BarberUpsertDialogContent = ({
                 <FormLabel>Nome</FormLabel>
                 <FormControl>
                   <Input placeholder="Seu nome" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="bio"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descrição</FormLabel>
+                <FormControl>
+                  <Textarea
+                    placeholder="Bio do barbeiro..."
+                    {...field}
+                    value={field.value ?? ""}
+                    rows={4}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

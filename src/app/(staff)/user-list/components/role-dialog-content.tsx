@@ -21,6 +21,8 @@ import { getAllRoles } from "@/actions/role/get-all-roles";
 import { Users } from "./user-columns";
 import BarberUpsertDialogContent from "../../components/barber-upsert-dialog-content";
 import { protectUser } from "@/app/constants/protect-user";
+import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import BarberRemoveContent from "./role-barber-remove-content";
 
 type Role = typeof rolesTable.$inferSelect;
 
@@ -65,12 +67,15 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
 
   const [selectedRoles, setSelectedRoles] = useState<string[]>(userRoles);
   const [openBarberDialog, setOpenBarberDialog] = useState(false);
+  const [openRemoveBarberAlert, setOpenRemoveBarberAlert] = useState(false);
 
   const toggleRole = (roleId: string) => {
     const hasRole = selectedRoles.includes(roleId);
 
     try {
-      if (hasRole) {
+      if (hasRole && roleId == "3b2d3b8f-d656-4825-8020-1c5e93d0cd64") {
+        setOpenRemoveBarberAlert(true);
+      } else if (hasRole) {
         executeDeleteUserRole({ userId: user.id, roleId });
         setSelectedRoles((prev) => prev.filter((id) => id !== roleId));
       } else {
@@ -142,6 +147,24 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
           }}
         />
       </Dialog>
+
+      <AlertDialog
+        open={openRemoveBarberAlert}
+        onOpenChange={setOpenRemoveBarberAlert}
+      >
+        <BarberRemoveContent
+          userId={user.id}
+          roleId="3b2d3b8f-d656-4825-8020-1c5e93d0cd64"
+          setOpenAlert={setOpenRemoveBarberAlert}
+          removeRole={() => {
+            setSelectedRoles((prev) =>
+              prev.filter(
+                (id) => id !== "3b2d3b8f-d656-4825-8020-1c5e93d0cd64",
+              ),
+            );
+          }}
+        />
+      </AlertDialog>
     </DialogContent>
   );
 };

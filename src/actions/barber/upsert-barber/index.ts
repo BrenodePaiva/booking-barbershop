@@ -11,7 +11,7 @@ import { hasAnyRole } from "@/app/helpers/has-any-role";
 
 export const upsertBarber = actionClient
   .inputSchema(upsertBarberSchema)
-  .action(async ({ parsedInput: { id, imageUrl, name } }) => {
+  .action(async ({ parsedInput: { id, imageUrl, name, bio } }) => {
     const session = await checkUserSession();
 
     const canUpsertBarber = await hasAnyRole(session.user.id, [
@@ -31,10 +31,10 @@ export const upsertBarber = actionClient
 
           await trx
             .insert(barberTable)
-            .values({ userId: id, imageUrl: url })
+            .values({ userId: id, imageUrl: url, bio })
             .onConflictDoUpdate({
               target: barberTable.userId,
-              set: { imageUrl: url },
+              set: { imageUrl: url, bio },
             });
         }
 
