@@ -29,9 +29,9 @@ const BarberRemoveContent = ({
 }: BarberRemoveContentProps) => {
   const { execute: executeRemoveUserRole } = useAction(deleteUserRole, {
     onSuccess: () => {
-      toast.success("Permissão removida com sucesso");
-      removeRole?.();
       setOpenAlert(false);
+      removeRole?.();
+      toast.success("Permissão removida com sucesso");
     },
     onError: (error) => {
       toast.error(`Error ao remover permissão: ${JSON.stringify(error.error)}`);

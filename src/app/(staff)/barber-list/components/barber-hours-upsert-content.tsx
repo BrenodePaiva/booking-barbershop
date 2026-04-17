@@ -86,8 +86,8 @@ const BarberHoursUpsertContent = ({
     upsertBarberAvailability,
     {
       onSuccess: () => {
-        toast.success(`Horário(s) atualizados com sucesso`);
         setDialogOpen(false);
+        toast.success(`Horário(s) atualizados com sucesso`);
       },
       onError: () => {
         toast.error("Ocorreu um erro. Tente novamente mais tarde");

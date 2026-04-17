@@ -60,10 +60,9 @@ const BarberUpsertDialogContent = ({
 
   const { execute: executeUpsertBarber, status } = useAction(upsertBarber, {
     onSuccess: () => {
-      toast.success("Perfil atualizado");
-
-      addRole?.();
       setOpenDialog(false);
+      addRole?.();
+      toast.success("Perfil atualizado");
     },
     onError: () => {
       toast.error("Erro ao atualizar o perfil");

@@ -79,11 +79,10 @@ const ServiceUpsertContent = ({
           toast.error(result.data?.message);
           return;
         }
+        setDialogOpen(false);
         toast.success(
           `Serviço ${defaultValues ? "Atualizado" : "Criado"} com sucesso`,
         );
-
-        setDialogOpen(false);
       },
       onError: () => {
         toast.error("Ocorreu um Erro na comunicação com o servidor.");
