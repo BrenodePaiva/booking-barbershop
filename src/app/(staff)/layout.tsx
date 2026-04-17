@@ -3,10 +3,12 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "@/app/globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { SideHeader } from "@/components/side-header";
-import { CustomTriggerHeader } from "@/components/custom-trigger-header";
+// import { SideHeader } from "@/components/side-header";
+// import { CustomTriggerHeader } from "@/components/custom-trigger-header";
 import { Toaster } from "sonner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import CustomTriggerHeader from "@/components/custom-trigger-header";
+import SideHeader from "@/components/side-header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -4,7 +4,7 @@ import { PanelLeft } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
 
-export function CustomTriggerHeader() {
+const CustomTriggerHeader = () => {
   const { toggleSidebar } = useSidebar();
   const [open, setOpen] = useState(true);
 
@@ -36,4 +36,6 @@ export function CustomTriggerHeader() {
       </SidebarHeader>
     </>
   );
-}
+};
+
+export default CustomTriggerHeader;
