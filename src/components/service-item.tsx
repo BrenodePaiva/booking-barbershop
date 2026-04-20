@@ -90,8 +90,8 @@ const generateAvailableTimes = (
       );
 
       const isBlocked = isWithinInterval(current, {
-        start: blocks.start,
-        end: blocks.end,
+        start: blocks?.start,
+        end: blocks?.end,
       });
 
       if (!hasBooking && !isBlocked) {
