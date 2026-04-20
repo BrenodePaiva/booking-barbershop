@@ -23,9 +23,12 @@ import SignInDialog from "./sign-in-dialog";
 import Search from "./search";
 import { getInitials } from "@/app/helpers/get-initials";
 import { LogOutButton } from "./log-out-button";
+import { useEffect, useState } from "react";
+import { Spinner } from "./ui/spinner";
 
 const Header = () => {
   const pathname = usePathname();
+  const [loadingHref, setLoadingHref] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const isBarbershop =
     (pathname.startsWith("/barbershop/") &&
@@ -34,10 +37,17 @@ const Header = () => {
 
   const { data: session } = authClient.useSession();
 
+  const handleClick = (herf: string) => {
+    setLoadingHref(herf);
+  };
+
+  if (loadingHref && pathname === loadingHref) {
+    setLoadingHref(null);
+  }
   return (
     <Card>
       <CardContent className="flex items-center justify-between">
-        <Link href="/">
+        <Link href="/" onClick={() => handleClick("/")}>
           <Image alt="FSW Barber" src="/Logo.svg" height={8} width={120} />
         </Link>
 
@@ -65,11 +75,17 @@ const Header = () => {
               variant={pathname === "/bookings" ? "default" : "ghost"}
               asChild
             >
-              <Link href="/bookings">
+              <Link href="/bookings" onClick={() => handleClick("/bookings")}>
                 <CalendarIcon size={18} />
                 Agendamento
               </Link>
             </Button>
+
+            {loadingHref && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <Spinner className="size-12 text-white" />
+              </div>
+            )}
 
             {session?.user ? (
               <>

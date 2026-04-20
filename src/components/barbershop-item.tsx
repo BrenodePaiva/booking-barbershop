@@ -7,7 +7,9 @@ import Link from "next/link";
 import { barberShopServiceTable, barberTable, userTable } from "@/db/schema";
 
 import { formatCentsToBRL } from "@/app/helpers/money";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Spinner } from "./ui/spinner";
 
 interface BarbershopItemProps {
   service?: typeof barberShopServiceTable.$inferSelect;
@@ -17,6 +19,15 @@ interface BarbershopItemProps {
 }
 
 const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    router.push(`/barbershop/${service?.id ?? barber?.id}`);
+  };
+
   return (
     <Card className="relative max-w-[200px] min-w-[200px] rounded-2xl px-1 pt-1 pb-9">
       <CardContent className="min-w-[159px] p-0">
@@ -51,15 +62,20 @@ const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
             </p>
           )}
         </div>
+
         <Button
           variant="secondary"
           className="absolute right-2 bottom-3 left-2 w-[calc(100%-1rem)]"
-          asChild
+          onClick={handleClick}
         >
-          <Link href={`/barbershop/${service?.id ?? barber?.id}`}>
-            Reservar
-          </Link>
+          Reservar
         </Button>
+
+        {loading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+            <Spinner className="size-12 text-white" />
+          </div>
+        )}
       </CardContent>
     </Card>
   );
