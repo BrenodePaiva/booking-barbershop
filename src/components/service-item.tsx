@@ -248,7 +248,9 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
             <Image
               alt={isService ? service.name : barber.user.name}
               src={
-                isService ? (service.imageUrl ?? "") : (barber.imageUrl ?? "")
+                isService
+                  ? `${service.imageUrl ?? ""}?t=${service.updatedAt.getTime()}`
+                  : `${barber.imageUrl ?? ""}?t=${barber.updatedAt.getTime()}`
               }
               fill
               className="rounded-xl object-cover"
