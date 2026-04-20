@@ -22,8 +22,8 @@ export const sendBookingEmail = async ({
 }: EmailData) => {
   try {
     await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
-      to: "delivered@resend.dev",
+      from: "FSW Barbearia <barbearia.brenofullstack.com>",
+      to: email,
       subject,
       html: emailTemplate(message, data, hora, link),
     });

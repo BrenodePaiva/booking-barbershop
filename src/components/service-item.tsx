@@ -40,6 +40,7 @@ import { createBooking } from "@/actions/booking/create-booking";
 import { Calendar } from "./ui/calendar";
 import BookingSummary from "./booking-summary";
 import { formatCentsToBRL } from "@/app/helpers/money";
+import { Spinner } from "./ui/spinner";
 
 type Availability = typeof barberAvailabilityTable.$inferSelect;
 type Blocks = typeof barberBlocksTable.$inferSelect;
@@ -152,6 +153,7 @@ const getTimeList = ({
 const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
   const { data: session } = authClient.useSession();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
@@ -203,12 +205,18 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
     setSelectedTime(time);
   };
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    router.push("/bookings");
+  };
+
   const { execute: executeCreateBooking } = useAction(createBooking, {
     onSuccess: () => {
       toast.success("Reserva criada com sucesso.", {
         action: {
           label: "Ver agendamentos",
-          onClick: () => router.push("/bookings"),
+          onClick: handleClick,
         },
       });
     },
@@ -280,6 +288,12 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
                 >
                   Resevar
                 </Button>
+
+                {loading && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                    <Spinner className="size-12 text-white" />
+                  </div>
+                )}
               </div>
             </div>
             <Sheet
