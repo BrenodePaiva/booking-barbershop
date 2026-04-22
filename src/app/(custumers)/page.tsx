@@ -26,13 +26,13 @@ const Home = async () => {
   const barbers = await getBarbers();
   const bookings = await getUserBookings();
 
-  // if (session?.user.id) {
-  //   await ensureClienteRole({ userId: session.user.id });
-  //   const role = await getUserRoles(session.user.id);
-  //   if (!role.includes("cliente")) {
-  //     redirect("/dashboard");
-  //   }
-  // }
+  if (session?.user.id) {
+    await ensureClienteRole({ userId: session.user.id });
+    const role = await getUserRoles(session.user.id);
+    if (!role.includes("cliente")) {
+      redirect("/dashboard");
+    }
+  }
 
   return (
     <div>
