@@ -154,6 +154,7 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
   const { data: session } = authClient.useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [timeLoading, setTimeLoading] = useState(false);
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | undefined>(
     undefined,
@@ -166,10 +167,15 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
   useEffect(() => {
     const feach = async () => {
       if (!selectedDay) return;
-      const booking = await getBookingsByDate({
-        date: selectedDay,
-      });
-      setDayBookings(booking);
+      setTimeLoading(true);
+      try {
+        const booking = await getBookingsByDate({
+          date: selectedDay,
+        });
+        setDayBookings(booking);
+      } finally {
+        setTimeLoading(false);
+      }
     };
     feach();
   }, [selectedDay]);
@@ -213,6 +219,7 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
 
   const { execute: executeCreateBooking } = useAction(createBooking, {
     onSuccess: () => {
+      setLoading(false);
       toast.success("Reserva criada com sucesso.", {
         action: {
           label: "Ver agendamentos",
@@ -221,12 +228,15 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
       });
     },
     onError: () => {
+      setLoading(false);
       toast.error("Erro ao criar reserva.");
     },
   });
 
   const handleCreateBooking = async () => {
     if (!selectedDate) return;
+
+    setLoading(true);
 
     executeCreateBooking({
       serviceId: service.id,
@@ -317,7 +327,11 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
                 {selectedDay && (
                   <div>
                     <div className="scrollbar-vintage flex gap-3 overflow-x-auto px-5 pb-1">
-                      {timeListe.length > 0 ? (
+                      {timeLoading ? (
+                        <div className="flex w-full items-center justify-center">
+                          <Spinner className="size-6 text-gray-500" />
+                        </div>
+                      ) : timeListe.length > 0 ? (
                         timeListe.map((time) => (
                           <Button
                             key={time}

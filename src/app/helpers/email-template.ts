@@ -1,6 +1,3 @@
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-
 export const emailTemplate = (
   message: string,
   data: string,
@@ -26,7 +23,7 @@ export const emailTemplate = (
             </p>
             <p style="font-size:14px; margin-bottom:16px;">
               Data: <strong>${data}</strong><br/>
-              Hora: <strong>${format(hora, "HH:mm", { locale: ptBR })}</strong>
+              Hora: <strong>${hora}</strong>
             </p>
             <p style="font-size:14px; margin-bottom:24px;">
               Clique no botão abaixo para acessar sua lista de agendamentos:

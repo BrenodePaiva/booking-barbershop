@@ -22,7 +22,7 @@ export const sendBookingEmail = async ({
 }: EmailData) => {
   try {
     await resend.emails.send({
-      from: "FSW Barbearia <barbearia.brenofullstack.com>",
+      from: "FSW Barbearia <reservas@barbearia.brenofullstack.com>",
       to: email,
       subject,
       html: emailTemplate(message, data, hora, link),
