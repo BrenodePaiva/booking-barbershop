@@ -12,13 +12,16 @@ export const proxy = async (req: NextRequest) => {
 
   const roles = await getUserRoles(session.user.id);
 
-  //  const pathname = req.nextUrl.pathname;
+  const pathname = req.nextUrl.pathname;
 
-  if (roles.includes("admin")) {
+  if (roles.includes("admin") || roles.includes("gerente")) {
     return NextResponse.next();
   } else if (roles.includes("cliente")) {
     return NextResponse.redirect(new URL("/", req.url));
-  } else if (!roles.includes("admin") || !roles.includes("gerente")) {
+  } else if (roles.includes("barbeiro")) {
+    if (pathname.startsWith("/booking-list")) {
+      return NextResponse.next();
+    }
     return NextResponse.redirect(new URL("/booking-list", req.url));
   }
 };
