@@ -21,6 +21,7 @@ import { useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import BookingCancelDialogContent from "./booking-cancel-dialog-content";
 import { formatCentsToBRL } from "@/app/helpers/money";
+import { Spinner } from "@/components/ui/spinner";
 
 type BookingWithRelations = typeof bookingTable.$inferSelect & {
   user: typeof userTable.$inferSelect;
@@ -44,20 +45,24 @@ const BookingAccordion = ({ bookings }: BookingAccordionProps) => {
   const [selectedBooking, setSelectedBooking] =
     useState<BookingWithRelations | null>(null);
   const [openCancelDialog, setOpenCancelDialog] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { execute: executeUpdateBookingStatus } = useAction(
     updateBookingStatus,
     {
       onSuccess: () => {
+        setLoading(false);
         toast.success("Status atualizado");
       },
       onError: () => {
+        setLoading(false);
         toast.error("Ocorreu um erro inesperado");
       },
     },
   );
 
   const onSubmitStatus = (bookingId: string, status: BookingStatus) => {
+    setLoading(true);
     executeUpdateBookingStatus({ id: bookingId, status });
   };
 
@@ -133,6 +138,11 @@ const BookingAccordion = ({ bookings }: BookingAccordionProps) => {
           </AccordionContent>
         </AccordionItem>
       ))}
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <Spinner className="size-12 text-white" />
+        </div>
+      )}
       <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
         {selectedBooking && (
           <BookingCancelDialogContent
