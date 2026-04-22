@@ -34,18 +34,20 @@ export const updateBookingStatus = actionClient
 
         if (!userBooking) throw new Error("Booking not found");
 
-        const bookingDate = dateAndTime(new Date(userBooking.date));
-        const message = `Olá ${userBooking.user.name}, seu agendamento foi ${userBooking.status}`;
-        const link = `${process.env.BETTER_AUTH_URL}/bookings`;
+        if (status !== "Concluído") {
+          const bookingDate = dateAndTime(new Date(userBooking.date));
+          const message = `Olá ${userBooking.user.name}, seu agendamento foi ${userBooking.status}`;
+          const link = `${process.env.BETTER_AUTH_URL}/bookings`;
 
-        await sendBookingEmail({
-          message,
-          data: bookingDate.date,
-          hora: bookingDate.time,
-          link,
-          email: userBooking.user.email,
-          subject: "Seu agendamento",
-        });
+          await sendBookingEmail({
+            message,
+            data: bookingDate.date,
+            hora: bookingDate.time,
+            link,
+            email: userBooking.user.email,
+            subject: "Seu agendamento",
+          });
+        }
 
         revalidatePath("/barbershops/[id]", "page");
         revalidatePath("/bookings");
