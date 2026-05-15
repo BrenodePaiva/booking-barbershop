@@ -18,6 +18,12 @@ const SignInDialog = () => {
         </DialogDescription>
       </DialogHeader>
 
+      <div className="text-muted-foreground text-[13px]">
+        <p>Administrador:</p>
+        <p>E-mail: admin@ddss</p>
+        <p>Senha: 123445556</p>
+      </div>
+
       <Button
         variant="outline"
         className="font-bold"
