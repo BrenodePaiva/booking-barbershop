@@ -24,6 +24,7 @@ import { protectUser } from "@/app/constants/protect-user";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import BarberRemoveContent from "./role-barber-remove-content";
 import { Spinner } from "@/components/ui/spinner";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 type Role = typeof rolesTable.$inferSelect;
 
@@ -101,6 +102,7 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
 
   return (
     <DialogContent>
+      <LoadingSpinner />
       <DialogHeader>
         <DialogTitle>Gerenciar Permissões</DialogTitle>
         <DialogDescription>
