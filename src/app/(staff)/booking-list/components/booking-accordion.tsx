@@ -12,7 +12,12 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { barberShopServiceTable, bookingTable, userTable } from "@/db/schema";
+import {
+  barberShopServiceTable,
+  barberTable,
+  bookingTable,
+  userTable,
+} from "@/db/schema";
 import { format } from "date-fns";
 import { useAction } from "next-safe-action/hooks";
 import { updateBookingStatus } from "@/actions/booking/update-booking-status.ts";
@@ -21,20 +26,24 @@ import { useState } from "react";
 import { Dialog } from "@/components/ui/dialog";
 import BookingCancelDialogContent from "./booking-cancel-dialog-content";
 import { formatCentsToBRL } from "@/app/helpers/money";
-import { Spinner } from "@/components/ui/spinner";
+import { LoadingSpinner } from "@/components/loading-spinner";
 
 type BookingWithRelations = typeof bookingTable.$inferSelect & {
   user: typeof userTable.$inferSelect;
   service: typeof barberShopServiceTable.$inferSelect;
+  barber: typeof barberTable.$inferSelect & {
+    user: typeof userTable.$inferSelect;
+  };
 };
 
 type BookingStatus = "Pendente" | "Confirmado" | "Cancelado" | "Concluído";
 
 interface BookingAccordionProps {
   bookings: BookingWithRelations[];
+  role: string[];
 }
 
-const BookingAccordion = ({ bookings }: BookingAccordionProps) => {
+const BookingAccordion = ({ bookings, role }: BookingAccordionProps) => {
   const grouped = {
     Pendente: bookings.filter((b) => b.status === "Pendente"),
     Confirmado: bookings.filter((b) => b.status === "Confirmado"),
@@ -87,6 +96,12 @@ const BookingAccordion = ({ bookings }: BookingAccordionProps) => {
                   <p>Horário: {format(booking.date, "dd/MM/yyyy HH:mm")}</p>
                 </CardHeader>
                 <CardContent className="space-y-3">
+                  {role.includes("admin") ||
+                    (role.includes("gerente") && (
+                      <p className="font-medium">
+                        Barbeiro: {booking.barber.user.name}
+                      </p>
+                    ))}
                   <p className="font-medium">Cliente: {booking.user.name}</p>
                   <p className="text-muted-foreground text-sm">
                     Serviço: {booking.service.name}
@@ -100,49 +115,53 @@ const BookingAccordion = ({ bookings }: BookingAccordionProps) => {
                     </p>
                   )}
                 </CardContent>
-                <CardFooter className="flex gap-2">
-                  {status === "Pendente" && (
-                    <>
-                      <Button
-                        onClick={() => onSubmitStatus(booking.id, "Confirmado")}
-                      >
-                        Confirmar
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() => handleCancelClick(booking)}
-                      >
-                        Cancelar
-                      </Button>
-                    </>
-                  )}
-                  {status === "Confirmado" && (
-                    <>
-                      <Button
-                        onClick={() => onSubmitStatus(booking.id, "Concluído")}
-                      >
-                        Concluir
-                      </Button>
+                {!role.includes("gerente") && (
+                  <CardFooter className="flex gap-2">
+                    {status === "Pendente" && (
+                      <>
+                        <Button
+                          onClick={() =>
+                            onSubmitStatus(booking.id, "Confirmado")
+                          }
+                        >
+                          Confirmar
+                        </Button>
+                        <Button
+                          variant="destructive"
+                          onClick={() => handleCancelClick(booking)}
+                        >
+                          Cancelar
+                        </Button>
+                      </>
+                    )}
+                    {status === "Confirmado" && (
+                      <>
+                        <Button
+                          onClick={() =>
+                            onSubmitStatus(booking.id, "Concluído")
+                          }
+                        >
+                          Concluir
+                        </Button>
 
-                      <Button
-                        variant="destructive"
-                        onClick={() => handleCancelClick(booking)}
-                      >
-                        Cancelar
-                      </Button>
-                    </>
-                  )}
-                </CardFooter>
+                        <Button
+                          variant="destructive"
+                          onClick={() => handleCancelClick(booking)}
+                        >
+                          Cancelar
+                        </Button>
+                      </>
+                    )}
+                  </CardFooter>
+                )}
               </Card>
             ))}
           </AccordionContent>
         </AccordionItem>
       ))}
-      {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <Spinner className="size-12 text-white" />
-        </div>
-      )}
+
+      {loading && <LoadingSpinner />}
+
       <Dialog open={openCancelDialog} onOpenChange={setOpenCancelDialog}>
         {selectedBooking && (
           <BookingCancelDialogContent

@@ -19,7 +19,7 @@ const BookingListPage = async () => {
     data = await getBarberBookings();
   }
 
-  return <BookingAccordion bookings={data} />;
+  return <BookingAccordion bookings={data} role={role} />;
 };
 
 export default BookingListPage;

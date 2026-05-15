@@ -35,21 +35,11 @@ const DashboardPage = async () => {
         <SummaryCard statusCount={bookingStatus} revenue={totalRevenue} />
       </div>
 
-      {/* <TesteDados /> */}
-
-      {/* <div className="w-[350px]">
-        <ComingBookings />
-      </div> */}
-
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3">
         <StatusPieChart chartData={bookingStatus} />
         <ServiceBarChart chartData={popularService} />
         <RevenueLineChart chartData={weeklyRevenue} />
       </div>
-
-      {/* <div className="w-[280px]">
-        <BarberRanking />
-      </div> */}
 
       <div className="flex w-full flex-col gap-10 md:flex-row">
         <BarberRanking barbersData={barberRanking} />

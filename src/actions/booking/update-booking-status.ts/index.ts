@@ -17,6 +17,7 @@ export const updateBookingStatus = actionClient
 
     const canUpdateBookingStatus = await hasAnyRole(session.user.id, [
       "barbeiro",
+      "admin",
     ]);
     if (!canUpdateBookingStatus) throw new Error("Unauthorized");
 

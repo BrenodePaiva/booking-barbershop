@@ -3,15 +3,25 @@ import { Card, CardContent } from "./ui/card";
 import { Button } from "./ui/button";
 import Image from "next/image";
 import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
+import { LoadingSpinner } from "./loading-spinner";
 
 const SignInCard = () => {
+  const [loading, setLoading] = useState(false);
+
   const handleLoginWithGoogleClick = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-    });
+    try {
+      setLoading(true);
+      await authClient.signIn.social({
+        provider: "google",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="flex h-[calc(100vh-156px)] items-center justify-center">
+      {loading && <LoadingSpinner />}
       <Card className="w-[90%]">
         <CardContent className="flex flex-col items-center gap-1">
           <h3 className="text-lg leading-none font-semibold">

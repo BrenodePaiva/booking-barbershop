@@ -1,5 +1,3 @@
-import { deleteService } from "@/actions/barbeshop-service/delete-service";
-import { DeleteServiceSchema } from "@/actions/barbeshop-service/delete-service/schema";
 import { deleteUserRole } from "@/actions/user/delete-user-role";
 import {
   AlertDialogAction,
@@ -10,6 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Spinner } from "@/components/ui/spinner";
 import { useAction } from "next-safe-action/hooks";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
@@ -27,22 +26,32 @@ const BarberRemoveContent = ({
   setOpenAlert,
   removeRole,
 }: BarberRemoveContentProps) => {
-  const { execute: executeRemoveUserRole } = useAction(deleteUserRole, {
-    onSuccess: () => {
-      setOpenAlert(false);
-      removeRole?.();
-      toast.success("Permissão removida com sucesso");
+  const { execute: executeRemoveUserRole, isExecuting } = useAction(
+    deleteUserRole,
+    {
+      onSuccess: () => {
+        setOpenAlert(false);
+        removeRole?.();
+        toast.success("Permissão removida com sucesso");
+      },
+      onError: (error) => {
+        toast.error(
+          `Error ao remover permissão: ${JSON.stringify(error.error)}`,
+        );
+      },
     },
-    onError: (error) => {
-      toast.error(`Error ao remover permissão: ${JSON.stringify(error.error)}`);
-    },
-  });
+  );
 
   const handleConfirmButton = () => {
     executeRemoveUserRole({ userId, roleId });
   };
   return (
-    <AlertDialogContent>
+    <AlertDialogContent className="relative">
+      {isExecuting && (
+        <div className="absolute z-10 h-full w-full bg-black/50">
+          <Spinner className="size-12 text-white" />
+        </div>
+      )}
       <AlertDialogHeader>
         <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
         <AlertDialogDescription className="text-destructive font-semibold">

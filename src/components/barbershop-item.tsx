@@ -3,13 +3,12 @@ import { Card, CardContent } from "./ui/card";
 import Image from "next/image";
 import { Button } from "./ui/button";
 
-import Link from "next/link";
 import { barberShopServiceTable, barberTable, userTable } from "@/db/schema";
 
 import { formatCentsToBRL } from "@/app/helpers/money";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Spinner } from "./ui/spinner";
+import { LoadingSpinner } from "./loading-spinner";
 
 interface BarbershopItemProps {
   service?: typeof barberShopServiceTable.$inferSelect;
@@ -71,11 +70,7 @@ const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
           Reservar
         </Button>
 
-        {loading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <Spinner className="size-12 text-white" />
-          </div>
-        )}
+        {loading && <LoadingSpinner />}
       </CardContent>
     </Card>
   );

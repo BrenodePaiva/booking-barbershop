@@ -41,6 +41,7 @@ import { Calendar } from "./ui/calendar";
 import BookingSummary from "./booking-summary";
 import { formatCentsToBRL } from "@/app/helpers/money";
 import { Spinner } from "./ui/spinner";
+import { LoadingSpinner } from "./loading-spinner";
 
 type Availability = typeof barberAvailabilityTable.$inferSelect;
 type Blocks = typeof barberBlocksTable.$inferSelect;
@@ -299,11 +300,7 @@ const ServiceItem = ({ barber, service, isService }: ServiceItemProps) => {
                   Resevar
                 </Button>
 
-                {loading && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                    <Spinner className="size-12 text-white" />
-                  </div>
-                )}
+                {loading && <LoadingSpinner />}
               </div>
             </div>
             <Sheet

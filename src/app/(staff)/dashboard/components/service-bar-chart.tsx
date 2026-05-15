@@ -59,7 +59,7 @@ const ServiceBarChart = ({ chartData }: ServiceBarChartProps) => {
               angle={-30}
               textAnchor="end"
               tickFormatter={(value) =>
-                value.length > 13 ? value.slice(0, 13) + "-" : value
+                value.length > 10 ? value.slice(0, 10) + "-" : value
               }
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />

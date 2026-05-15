@@ -23,8 +23,8 @@ import SignInDialog from "./sign-in-dialog";
 import Search from "./search";
 import { getInitials } from "@/app/helpers/get-initials";
 import { LogOutButton } from "./log-out-button";
-import { useEffect, useState } from "react";
-import { Spinner } from "./ui/spinner";
+import { useState } from "react";
+import { LoadingSpinner } from "./loading-spinner";
 
 const Header = () => {
   const pathname = usePathname();
@@ -81,11 +81,7 @@ const Header = () => {
               </Link>
             </Button>
 
-            {loadingHref && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <Spinner className="size-12 text-white" />
-              </div>
-            )}
+            {loadingHref && <LoadingSpinner />}
 
             {session?.user ? (
               <>

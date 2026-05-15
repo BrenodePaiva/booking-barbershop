@@ -14,7 +14,7 @@ export const getBarberBookings = async () => {
 
   const barberBookings = await db.query.bookingTable.findMany({
     where: (bookings, { eq }) => eq(bookings.barberId, barber.id),
-    with: { user: true, service: true },
+    with: { user: true, service: true, barber: { with: { user: true } } },
     orderBy: (bookings, { asc }) => [asc(bookings.date)],
   });
 

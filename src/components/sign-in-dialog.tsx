@@ -2,15 +2,25 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 import { DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog";
 import { authClient } from "@/lib/auth-client";
+import { useState } from "react";
+import { LoadingSpinner } from "./loading-spinner";
 
 const SignInDialog = () => {
+  const [loading, setLoading] = useState(false);
+
   const handleSignInWithGoogle = async () => {
-    await authClient.signIn.social({
-      provider: "google",
-    });
+    try {
+      setLoading(true);
+      await authClient.signIn.social({
+        provider: "google",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <>
+      {loading && <LoadingSpinner />}
       <DialogHeader>
         <DialogTitle>Faça login na plataforma</DialogTitle>
         <DialogDescription>

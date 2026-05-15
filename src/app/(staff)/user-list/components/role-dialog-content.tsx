@@ -23,6 +23,7 @@ import BarberUpsertDialogContent from "../../components/barber-upsert-dialog-con
 import { protectUser } from "@/app/constants/protect-user";
 import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import BarberRemoveContent from "./role-barber-remove-content";
+import { Spinner } from "@/components/ui/spinner";
 
 type Role = typeof rolesTable.$inferSelect;
 
@@ -46,25 +47,32 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
     fetchRoles();
   }, []);
 
-  const { execute: executeAddUserRole } = useAction(addUserRole, {
-    onSuccess: () => {
-      toast.success("Permissão adicionada com sucesso");
+  const { execute: executeAddUserRole, isExecuting: isAddingRole } = useAction(
+    addUserRole,
+    {
+      onSuccess: () => {
+        toast.success("Permissão adicionada com sucesso");
+      },
+      onError: (error) => {
+        toast.error(
+          `Error ao adicionar permissão: ${JSON.stringify(error.error)}`,
+        );
+      },
     },
-    onError: (error) => {
-      toast.error(
-        `Error ao adicionar permissão: ${JSON.stringify(error.error)}`,
-      );
-    },
-  });
-  const { execute: executeDeleteUserRole } = useAction(deleteUserRole, {
-    onSuccess: () => {
-      toast.success("Permissão removida com sucesso");
-    },
-    onError: (error) => {
-      toast.error(`Error ao remover permissão: ${JSON.stringify(error.error)}`);
-    },
-  });
+  );
+  const { execute: executeDeleteUserRole, isExecuting: isDeletingRole } =
+    useAction(deleteUserRole, {
+      onSuccess: () => {
+        toast.success("Permissão removida com sucesso");
+      },
+      onError: (error) => {
+        toast.error(
+          `Error ao remover permissão: ${JSON.stringify(error.error)}`,
+        );
+      },
+    });
 
+  const isExecutingGlobal = isAddingRole || isDeletingRole;
   const [selectedRoles, setSelectedRoles] = useState<string[]>(userRoles);
   const [openBarberDialog, setOpenBarberDialog] = useState(false);
   const [openRemoveBarberAlert, setOpenRemoveBarberAlert] = useState(false);
@@ -100,7 +108,12 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
         </DialogDescription>
       </DialogHeader>
       <Card>
-        <CardContent>
+        <CardContent className="relative">
+          {isExecutingGlobal && (
+            <div className="absolute z-10 h-full w-full bg-black/50">
+              <Spinner className="size-12 text-white" />
+            </div>
+          )}
           {allRoles.map((role) => (
             <div className="flex flex-col gap-6" key={role.id}>
               <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-aria-checked:border-blue-600 has-aria-checked:bg-blue-50 dark:has-aria-checked:border-blue-900 dark:has-aria-checked:bg-blue-950">
