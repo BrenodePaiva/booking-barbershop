@@ -107,13 +107,13 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
           Gerencie as permissões do usuário.
         </DialogDescription>
       </DialogHeader>
-      <Card>
-        <CardContent className="relative">
-          {isExecutingGlobal && (
-            <div className="absolute z-10 h-full w-full bg-black/50">
-              <Spinner className="size-12 text-white" />
-            </div>
-          )}
+      <Card className="relative">
+        {isExecutingGlobal && (
+          <div className="absolute z-10 h-full w-full bg-black/50">
+            <Spinner className="size-12 text-white" />
+          </div>
+        )}
+        <CardContent>
           {allRoles.map((role) => (
             <div className="flex flex-col gap-6" key={role.id}>
               <Label className="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-aria-checked:border-blue-600 has-aria-checked:bg-blue-50 dark:has-aria-checked:border-blue-900 dark:has-aria-checked:bg-blue-950">
