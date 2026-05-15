@@ -23,8 +23,8 @@ const SignInCard = () => {
 
           <div className="text-muted-foreground text-[13px]">
             <p>Administrador:</p>
-            <p>E-mail: admin@ddss</p>
-            <p>Senha: 123445556</p>
+            <p>E-mail: admin.demo7@gmail.com</p>
+            <p>Senha: 12345678ad</p>
           </div>
 
           <Button
