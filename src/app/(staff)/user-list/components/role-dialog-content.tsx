@@ -21,9 +21,8 @@ import { getAllRoles } from "@/actions/role/get-all-roles";
 import { Users } from "./user-columns";
 import BarberUpsertDialogContent from "../../components/barber-upsert-dialog-content";
 import { protectUser } from "@/app/constants/protect-user";
-import { AlertDialog, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { AlertDialog } from "@/components/ui/alert-dialog";
 import BarberRemoveContent from "./role-barber-remove-content";
-import { Spinner } from "@/components/ui/spinner";
 import { LoadingSpinner } from "@/components/loading-spinner";
 
 type Role = typeof rolesTable.$inferSelect;
@@ -102,19 +101,14 @@ const RoleDialogContent = ({ user, userRoles }: RoleDialogContentProps) => {
 
   return (
     <DialogContent>
-      <LoadingSpinner />
+      {isExecutingGlobal && <LoadingSpinner />}
       <DialogHeader>
         <DialogTitle>Gerenciar Permissões</DialogTitle>
         <DialogDescription>
           Gerencie as permissões do usuário.
         </DialogDescription>
       </DialogHeader>
-      <Card className="relative">
-        {isExecutingGlobal && (
-          <div className="absolute z-10 h-full w-full bg-black/50">
-            <Spinner className="size-12 text-white" />
-          </div>
-        )}
+      <Card>
         <CardContent>
           {allRoles.map((role) => (
             <div className="flex flex-col gap-6" key={role.id}>

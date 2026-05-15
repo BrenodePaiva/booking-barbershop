@@ -1,4 +1,5 @@
 import { deleteUserRole } from "@/actions/user/delete-user-role";
+import { LoadingSpinner } from "@/components/loading-spinner";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -8,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Spinner } from "@/components/ui/spinner";
 import { useAction } from "next-safe-action/hooks";
 import { Dispatch, SetStateAction } from "react";
 import { toast } from "sonner";
@@ -46,12 +46,8 @@ const BarberRemoveContent = ({
     executeRemoveUserRole({ userId, roleId });
   };
   return (
-    <AlertDialogContent className="relative">
-      {isExecuting && (
-        <div className="absolute z-10 h-full w-full bg-black/50">
-          <Spinner className="size-12 text-white" />
-        </div>
-      )}
+    <AlertDialogContent>
+      {isExecuting && <LoadingSpinner />}
       <AlertDialogHeader>
         <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
         <AlertDialogDescription className="text-destructive font-semibold">
