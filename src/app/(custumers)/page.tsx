@@ -16,6 +16,14 @@ import { redirect } from "next/navigation";
 import { getUserBookings } from "@/data/bookings/get-user-bookings";
 import { getRecomendedServices } from "@/data/service-barbershop/get-recomended-services";
 import { ensureClienteRole } from "@/actions/role/ensure-cliente-role";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Card, CardContent } from "@/components/ui/card";
 
 const Home = async () => {
   const session = await auth.api.getSession({
@@ -64,21 +72,30 @@ const Home = async () => {
               <Search />
             </div>
 
-            <div className="scrollbar-vintage mt-6 flex gap-3 overflow-x-auto pb-1">
-              {quickSearchOptions.map((option) => (
-                <Button variant="secondary" key={option.title} asChild>
-                  <Link href={`/barbershop?service=${option.title}`}>
-                    <Image
-                      alt={option.title}
-                      src={option.imageUrl}
-                      width={16}
-                      height={16}
-                    />
-                    {option.title}
-                  </Link>
-                </Button>
-              ))}
-            </div>
+            <Carousel
+              opts={{
+                dragFree: true,
+              }}
+              className="mt-6 w-full"
+            >
+              <CarouselContent className="-ml-1 gap-3">
+                {quickSearchOptions.map((option) => (
+                  <CarouselItem key={option.title} className="basis-auto pl-1">
+                    <Button variant="secondary" asChild>
+                      <Link href={`/barbershop?service=${option.title}`}>
+                        <Image
+                          alt={option.title}
+                          src={option.imageUrl}
+                          width={16}
+                          height={16}
+                        />
+                        {option.title}
+                      </Link>
+                    </Button>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
 
             <div className="relative mt-6 h-[150px] w-full md:hidden">
               <Image
@@ -94,15 +111,18 @@ const Home = async () => {
                 <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
                   Agendamentos
                 </h2>
-                <div className="scrollbar-vintage flex gap-3 overflow-x-auto pb-1">
-                  {bookings.map((booking) => (
-                    <BookingItem
-                      booking={booking}
-                      key={booking.id}
-                      width="min-w-[90%] md:min-w-full"
-                    />
-                  ))}
-                </div>
+
+                <Carousel className="w-full">
+                  <CarouselContent className="mr-[68px] ml-3 md:mr-0">
+                    {bookings.map((booking, index) => (
+                      <CarouselItem className="basis-1/1" key={index}>
+                        <BookingItem booking={booking} key={booking.id} />
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="-left-[9px]" />
+                  <CarouselNext className="right-8 md:-right-9" />
+                </Carousel>
               </>
             )}
           </div>
@@ -110,11 +130,22 @@ const Home = async () => {
             <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
               Barbeiros
             </h2>
-            <div className="scrollbar-vintage flex gap-4 overflow-auto pb-1">
-              {barbers.map((barber) => (
-                <BarbershopItem key={barber.id} barber={barber} />
-              ))}
-            </div>
+
+            <Carousel className="w-full">
+              <CarouselPrevious className="-top-6 right-12 left-auto rounded bg-gray-200 p-2" />
+              <CarouselNext className="-top-6 right-0 left-auto rounded bg-gray-200 p-2" />
+
+              <CarouselContent className="-ml-1">
+                {barbers.map((barbers, index) => (
+                  <CarouselItem
+                    className="xs:basis-1/2 basis-1/1 pl-1 sm:basis-1/3 md:basis-1/2 xl:basis-1/3"
+                    key={index}
+                  >
+                    <BarbershopItem barber={barbers} />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           </div>
         </div>
 
@@ -122,22 +153,44 @@ const Home = async () => {
           <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
             Serviços
           </h2>
-          <div className="scrollbar-vintage flex gap-4 overflow-x-auto pb-1">
-            {services.map((service) => (
-              <BarbershopItem key={service.id} service={service} />
-            ))}
-          </div>
+
+          <Carousel className="w-full">
+            <CarouselPrevious className="-top-6 right-12 left-auto rounded bg-gray-200 p-2" />
+            <CarouselNext className="-top-6 right-0 left-auto rounded bg-gray-200 p-2" />
+
+            <CarouselContent className="-ml-1">
+              {services.map((service, index) => (
+                <CarouselItem
+                  className="xs:basis-1/2 basis-1/1 pl-1 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
+                  key={index}
+                >
+                  <BarbershopItem service={service} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
 
         <div className="p-5">
           <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
             Recomendados
           </h2>
-          <div className="scrollbar-vintage flex gap-4 overflow-x-auto pb-1">
-            {recomendedServices.map((service) => (
-              <BarbershopItem key={service.id} service={service} />
-            ))}
-          </div>
+
+          <Carousel className="w-full">
+            <CarouselPrevious className="-top-6 right-12 left-auto rounded bg-gray-200 p-2" />
+            <CarouselNext className="-top-6 right-0 left-auto rounded bg-gray-200 p-2" />
+
+            <CarouselContent className="-ml-1">
+              {recomendedServices.map((service, index) => (
+                <CarouselItem
+                  className="xs:basis-1/2 basis-1/1 pl-1 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
+                  key={index}
+                >
+                  <BarbershopItem service={service} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </Carousel>
         </div>
       </div>
     </div>

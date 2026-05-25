@@ -9,6 +9,7 @@ import { formatCentsToBRL } from "@/app/helpers/money";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { LoadingSpinner } from "./loading-spinner";
+import { CarouselItem } from "./ui/carousel";
 
 interface BarbershopItemProps {
   service?: typeof barberShopServiceTable.$inferSelect;
@@ -28,51 +29,55 @@ const BarbershopItem = ({ service, barber }: BarbershopItemProps) => {
   };
 
   return (
-    <Card className="relative max-w-[200px] min-w-[200px] rounded-2xl px-1 pt-1 pb-9">
-      <CardContent className="min-w-[159px] p-0">
-        <div className="relative h-[159px] w-full">
-          {service?.imageUrl || barber?.imageUrl ? (
-            <Image
-              alt={service?.name ?? barber?.user.name ?? ""}
-              src={`${service?.imageUrl ?? barber?.imageUrl ?? ""}?t=${
-                service?.updatedAt
-                  ? service?.updatedAt.getTime()
-                  : barber?.updatedAt.getTime()
-              }
+    // <CarouselItem className="basis-1/3 pl-1 md:basis-1/2 xl:basis-1/3">
+    <div className="h-full p-1">
+      <Card className="relative h-full w-full rounded-2xl px-1 pt-1 pb-9">
+        <CardContent className="h-full w-full min-w-[159px] p-0">
+          <div className="relative h-[159px] w-full">
+            {service?.imageUrl || barber?.imageUrl ? (
+              <Image
+                alt={service?.name ?? barber?.user.name ?? ""}
+                src={`${service?.imageUrl ?? barber?.imageUrl ?? ""}?t=${
+                  service?.updatedAt
+                    ? service?.updatedAt.getTime()
+                    : barber?.updatedAt.getTime()
+                }
                 `}
-              fill
-              className="rounded-2xl object-cover"
-            />
-          ) : (
-            <div className="h-full w-full bg-gray-500"></div>
-          )}
-        </div>
+                fill
+                className="rounded-2xl object-cover"
+              />
+            ) : (
+              <div className="h-full w-full bg-gray-500"></div>
+            )}
+          </div>
 
-        <div className="mb-4 px-2 py-3">
-          <h3 className="mb-2 font-semibold">
-            {service?.name ?? barber?.user.name}
-          </h3>
-          <p className="line-clamp-2 text-sm text-gray-400">
-            {service?.description ?? barber?.bio}
-          </p>
-          {service?.priceCents && (
-            <p className="mt-1 truncate text-sm text-gray-400">
-              {formatCentsToBRL(service.priceCents)}
+          <div className="mb-4 px-2 py-3">
+            <h3 className="mb-2 font-semibold">
+              {service?.name ?? barber?.user.name}
+            </h3>
+            <p className="line-clamp-2 text-sm text-gray-400">
+              {service?.description ?? barber?.bio}
             </p>
-          )}
-        </div>
+            {service?.priceCents && (
+              <p className="mt-1 truncate text-sm text-gray-400">
+                {formatCentsToBRL(service.priceCents)}
+              </p>
+            )}
+          </div>
 
-        <Button
-          variant="secondary"
-          className="absolute right-2 bottom-3 left-2 w-[calc(100%-1rem)]"
-          onClick={handleClick}
-        >
-          Reservar
-        </Button>
+          <Button
+            variant="secondary"
+            className="absolute right-2 bottom-3 left-2 w-[calc(100%-1rem)]"
+            onClick={handleClick}
+          >
+            Reservar
+          </Button>
 
-        {loading && <LoadingSpinner />}
-      </CardContent>
-    </Card>
+          {loading && <LoadingSpinner />}
+        </CardContent>
+      </Card>
+    </div>
+    // </CarouselItem>
   );
 };
 
