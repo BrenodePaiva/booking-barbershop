@@ -113,20 +113,20 @@ const Home = async () => {
                 </h2>
 
                 <Carousel className="w-full">
-                  <CarouselContent className="mr-[68px] ml-3 md:mr-0">
+                  <CarouselContent className="xs:mr-[68px] xs:ml-3 md:mr-0">
                     {bookings.map((booking, index) => (
                       <CarouselItem className="basis-1/1" key={index}>
                         <BookingItem booking={booking} key={booking.id} />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="-left-[9px]" />
-                  <CarouselNext className="right-8 md:-right-9" />
+                  <CarouselPrevious className="xs:block -left-[9px] hidden" />
+                  <CarouselNext className="xs:block right-8 hidden md:-right-9" />
                 </Carousel>
               </>
             )}
           </div>
-          <div className="z-20">
+          <div className="z-20 pt-8 lg:pt-0">
             <h2 className="mt-6 mb-3 text-xs font-bold text-gray-400 uppercase">
               Barbeiros
             </h2>
