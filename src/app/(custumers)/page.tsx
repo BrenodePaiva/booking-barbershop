@@ -23,7 +23,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Card, CardContent } from "@/components/ui/card";
 
 const Home = async () => {
   const session = await auth.api.getSession({
@@ -112,16 +111,19 @@ const Home = async () => {
                   Agendamentos
                 </h2>
 
-                <Carousel className="w-full">
-                  <CarouselContent className="xs:mr-[68px] xs:ml-3 md:mr-0">
+                <Carousel className="xs:ml-[26.5px] xs:w-[98%] xs:pr-[68px] w-full md:pr-0">
+                  <CarouselContent className="ml-0 w-full pt-px">
                     {bookings.map((booking, index) => (
-                      <CarouselItem className="basis-1/1" key={index}>
+                      <CarouselItem
+                        className="basis-1/1 pr-px pl-0"
+                        key={index}
+                      >
                         <BookingItem booking={booking} key={booking.id} />
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious className="xs:block -left-[9px] hidden" />
-                  <CarouselNext className="xs:block right-8 hidden md:-right-9" />
+                  <CarouselPrevious className="xs:flex -left-9 hidden" />
+                  <CarouselNext className="xs:flex right-8 hidden md:-right-9" />
                 </Carousel>
               </>
             )}
@@ -131,7 +133,12 @@ const Home = async () => {
               Barbeiros
             </h2>
 
-            <Carousel className="w-full">
+            <Carousel
+              className="w-full"
+              opts={{
+                skipSnaps: true,
+              }}
+            >
               <CarouselPrevious className="-top-6 right-12 left-auto rounded bg-gray-200 p-2" />
               <CarouselNext className="-top-6 right-0 left-auto rounded bg-gray-200 p-2" />
 
@@ -154,7 +161,12 @@ const Home = async () => {
             Serviços
           </h2>
 
-          <Carousel className="w-full">
+          <Carousel
+            className="w-full"
+            opts={{
+              skipSnaps: true,
+            }}
+          >
             <CarouselPrevious className="-top-6 right-12 left-auto rounded bg-gray-200 p-2" />
             <CarouselNext className="-top-6 right-0 left-auto rounded bg-gray-200 p-2" />
 
@@ -176,7 +188,12 @@ const Home = async () => {
             Recomendados
           </h2>
 
-          <Carousel className="w-full">
+          <Carousel
+            className="w-full"
+            opts={{
+              skipSnaps: true,
+            }}
+          >
             <CarouselPrevious className="-top-6 right-12 left-auto rounded bg-gray-200 p-2" />
             <CarouselNext className="-top-6 right-0 left-auto rounded bg-gray-200 p-2" />
 
