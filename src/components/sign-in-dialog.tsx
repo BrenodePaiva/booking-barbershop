@@ -30,8 +30,10 @@ const SignInDialog = () => {
 
       <div className="text-muted-foreground text-[13px]">
         <p>Administrador:</p>
-        <p>E-mail: admin.demo7@gmail.com</p>
-        <p>Senha: 12345678ad</p>
+        <p>
+          Para acessar como administrador, entre em contato:
+          brenopaiva552@gmail.com
+        </p>
       </div>
 
       <Button
